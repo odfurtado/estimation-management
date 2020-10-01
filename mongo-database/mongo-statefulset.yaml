@@ -26,6 +26,9 @@ spec:
         - name: mongodb
           mountPath: /etc/mongodb
           readOnly: true
+        - name: mongodb-scripts
+          mountPath: /docker-entrypoint-initdb.d
+          readOnly: true
       volumes:
       - name: mongodb
         secret:
@@ -37,3 +40,18 @@ spec:
           - key: MONGO_ROOT_PASSWORD
             path: admin/MONGO_ROOT_PASSWORD
             mode: 0444
+          - key: MONGO_EM_USERNAME
+            path: MONGO_USERNAME
+            mode: 0444
+          - key: MONGO_EM_PASSWORD
+            path: MONGO_PASSWORD
+            mode: 0444
+          - key: MONGO_USERS_LIST
+            path: MONGO_USERS_LIST
+            mode: 0444
+      - name: mongodb-scripts
+        configMap:
+          name: mongodb-standalone
+          items:
+          - key: ensure-users.js
+            path: ensure-users.js
