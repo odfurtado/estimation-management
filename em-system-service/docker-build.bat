@@ -1,0 +1,1 @@
+docker build --tag em-system-service:1.0 .

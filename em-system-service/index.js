@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const _ = require('lodash');
 const {SystemController} = require('./controller');
 
-const SERVER_PORT = process.env.SERVER_PORT || '80';
+const SERVER_PORT = process.env.SERVER_PORT || '5000';
 
 var app = express();
 app.use(bodyParser.json());

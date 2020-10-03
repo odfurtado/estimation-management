@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: system-service-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      component: system-service
+  template:
+    metadata:
+      labels:
+        component: system-service
+    spec:
+      containers:
+        - name: system-service
+          image: "em-system-service:1.0"
+          ports:
+            - containerPort: 80
+          env:
+            - name: SERVER_PORT
+              value: '80'
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: MONGO_EM_USERNAME
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: MONGO_EM_PASSWORD
+            - name: MONGO_URL
+              value: 'mongodb-cluster-ip-service'
+            - name: MONGO_PORT
+              value: '27017'

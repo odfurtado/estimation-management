@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: system-service-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: system-service
+  ports:
+    - port: 80 #external port
+      targetPort: 80 #system-service port

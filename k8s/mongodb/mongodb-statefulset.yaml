@@ -1,21 +1,20 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongodb-standalone
+  name: mongodb-statefulset
 spec:
-  serviceName: database
+  serviceName: mongodb
   replicas: 1
   selector:
     matchLabels:
-      app: database
+      component: mongodb
   template:
     metadata:
       labels:
-        app: database
-        selector: mongodb-standalone
+        component: mongodb
     spec:
       containers:
-      - name: mongodb-standalone
+      - name: mongodb
         image: mongo:4.4.1
         env:
           - name: MONGO_INITDB_ROOT_USERNAME_FILE
@@ -23,16 +22,16 @@ spec:
           - name: MONGO_INITDB_ROOT_PASSWORD_FILE
             value: /etc/mongodb/admin/MONGO_ROOT_PASSWORD
         volumeMounts:
-        - name: mongodb
+        - name: mongodb-users
           mountPath: /etc/mongodb
           readOnly: true
         - name: mongodb-scripts
           mountPath: /docker-entrypoint-initdb.d
           readOnly: true
       volumes:
-      - name: mongodb
+      - name: mongodb-users
         secret:
-          secretName: mongodb
+          secretName: mongodb-secret
           items:
           - key: MONGO_ROOT_USERNAME
             path: admin/MONGO_ROOT_USERNAME
@@ -51,7 +50,7 @@ spec:
             mode: 0444
       - name: mongodb-scripts
         configMap:
-          name: mongodb-standalone
+          name: mongodb-configmap
           items:
           - key: ensure-users.js
             path: ensure-users.js

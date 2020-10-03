@@ -6,6 +6,8 @@ const MONGO_URL = process.env.MONGO_URL || 'localhost';
 const MONGO_PORT = process.env.MONGO_PORT || '27017';
 const MONGO_URI = 'mongodb://' + MONGO_USERNAME + ':' + MONGO_PASSWORD + '@' + MONGO_URL + ':' + MONGO_PORT + '/em';
 
+console.log('MongoDB Connecting: ' + MONGO_URI);
 database.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+console.log('MongoDB Connected');
 
 module.exports = { database };
